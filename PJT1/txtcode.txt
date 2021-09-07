@@ -1,0 +1,448 @@
+data <- read.csv("C:/Users/sec/Desktop/mid.csv")
+head(data)
+str(data)
+# gender, age : 범주형 자료
+# height, weight, time : 수치형 자료.
+
+summary(data)
+
+
+#-> age 이외의 변수에서는 이상치가 파악되지는 않고 있음.
+
+#백분율 구하기
+prop.table(table(data$gender))*100
+prop.table(table(data$height))*100
+prop.table(table(data$weight))*100
+prop.table(table(data$age))*100
+prop.table(table(data$time))*100
+
+#소수점 첫째자리까지 남겨두고 나머지 다 반올림 하기
+round(prop.table(table(data$gender))*100, digits=1)
+round(prop.table(table(data$height))*100, digits=1)
+round(prop.table(table(data$weight))*100, digits=1)
+round(prop.table(table(data$age))*100, digits=1)
+round(prop.table(table(data$time))*100, digits=1)
+
+#prettyR 패키지의 freq() 함수를 사용하여 빈도와 백분율을 한번에 구하기
+install.packages("prettyR")
+library(prettyR)
+freq(data$gender)
+freq(data$height)
+freq(data$weight)
+freq(data$age)
+freq(data$time)
+
+#막대그래프로 데이터 시각화 하기
+par(mfrow=c(2,3))
+barplot(table(data$gender), col="purple", main="성별")
+barplot(table(data$height), col="red", main="키")
+barplot(table(data$weight), col="blue", main="몸무게")
+barplot(table(data$age), col="gray", main="나이")
+barplot(table(data$time), col="yellow", main="통학 시간")
+
+#원 그래프로 시작화하기
+par(mfrow=c(2,3))
+pie(table(data$gender),radius=1,init.angle=-30, main="성별")
+pie(table(data$height),radius=1,init.angle=-30, main="키")
+pie(table(data$weight),radius=1,init.angle=-30, main="몸무게")
+pie(table(data$age),radius=1,init.angle=-30, main="나이")
+pie(table(data$time),radius=1,init.angle=-30, main="통학 시간")
+
+#평균, 5%절사평균, 중위수, 최빈수
+#평균
+library(ggplot2)
+mean(data$gender)
+mean(data$height)
+mean(data$weight)
+mean(data$age)
+mean(data$time)
+#5%절사평균
+mean(data$gender, trim=0.05)
+mean(data$height, trim=0.05)
+mean(data$weight, trim=0.05)
+mean(data$age, trim=0.05)
+mean(data$time, trim=0.05)
+#중위수
+median(data$gender)
+median(data$height)
+median(data$weight)
+median(data$age)
+median(data$time)
+
+#최빈수
+index=which.max(table(data$gender))
+table(data$gender)[index]
+install.packages("prettyR")
+library(prettyR)
+Mode(data$gender)
+
+index=which.max(table(data$height))
+table(data$height)[index]
+install.packages("prettyR")
+library(prettyR)
+Mode(data$height)
+
+
+index=which.max(table(data$weight))
+table(data$weight)[index]
+install.packages("prettyR")
+library(prettyR)
+Mode(data$weight)
+
+index=which.max(table(data$age))
+table(data$age)[index]
+install.packages("prettyR")
+library(prettyR)
+Mode(data$age)
+
+index=which.max(table(data$time))
+table(data$time)[index]
+install.packages("prettyR")
+library(prettyR)
+Mode(data$time)
+
+#범위(최대값-최소값)
+library(ggplot2)
+diff(range(data$gender))
+diff(range(data$height))
+diff(range(data$weight))
+diff(range(data$age))
+diff(range(data$time))
+
+#사분위수(제 3분위수-제 1분위수)
+IQR(data$gender)
+IQR(data$height)
+IQR(data$weight)
+IQR(data$age)
+IQR(data$time)
+
+#분산
+var(data$gender)
+var(data$height)
+var(data$weight)
+var(data$age)
+var(data$time)
+
+#표준편차
+sd(data$gender)
+sd(data$height)
+sd(data$weight)
+sd(data$age)
+sd(data$time)
+
+#중위수 절대편차
+mad(data$gender)
+mad(data$height)
+mad(data$weight)
+mad(data$age)
+mad(data$time)
+
+#by() 함수로 집단별 기술 통계량을 구하기
+#gender별로 height에 대한 6개 기술 통계량 구하기
+by(data$height,data$gender,summary)
+#gender별로 weight에 대한 6개 기술 통계량 구하기
+by(data$weight,data$gender,summary)
+#gender별로 age에 대한 6개 기술 통계량 구하기
+by(data$age,data$gender,summary)
+#gender별로 time에 대한 6개 기술 통계량 구하기
+by(data$time,data$gender,summary)
+#height별로 weight에 대한 6개 기술통계량 구하기
+by(data$weight,data$height,summary)
+#height별로 age에 대한 6개 기술통계량 구하기
+by(data$age,data$height,summary)
+#height별로 time에 대한 6개 기술통계량 구하기
+by(data$time,data$height,summary)
+#weight별로 age에 대한 6개 기술통계량 구하기
+by(data$age,data$weight,summary)
+#weight별로 time 대한 6개 기술통계량 구하기
+by(data$time,data$weight,summary)
+#time별로 age에 대한 6개 기술통계량 구하기
+by(data$age,data$time,summary)
+
+### 또한, 평균, 표준편차만 빼서 구할 수도 있다.
+#time별로 age에 대한 평균 구하기
+by(data$age,data$time,mean)
+#time별로 age에 대한 표준편차 구하기
+by(data$age,data$time,sd)
+### 모든 경우를 구하기 위해서는 by() 함수로 집단별 기술 통계량을 구한 것처럼
+### 경우를 나눠주면 된다. 하지만, summary 함수로 구했기 때문에 생략한다.
+
+#describe() 함수
+install.packages("psych")
+library(psych)
+describe(data$gender)
+describe(data$height)
+describe(data$weight)
+describe(data$age)
+describe(data$time)
+### decribe() 함수를 이용하면 변수의 개수(vars), 데이터의 개수(n), 평균(mean), 표준편차(sd)
+### 중위수(median), 10% 절사평균(trimmed), 중위수 절대편차(mad), 최소값(min)
+### 최대값(max), 범위(range), 왜도(skew), 첨도(kurtiosis), 표준오차(se)를 알려줌
+### 중위수 절대편차(mad)
+# 양적 자료의 퍼짐(산포)를 알려주는 값 범위들과 다르게 이상한 값에 영향을 잘 받지 않는 값
+### 왜도(skew)
+# 양적 자료의 분포의 모양과 대칭여부를 알려줌. 0에 가까우면 대칭, 멀어지면 비대칭
+### 첨도(kurtosis)
+# 중심의 뾰족한 정도를 알려줌
+# 0에 가까우면 보통정도 높이, 0보타 커지면 매우 뾰족, 0보다 작아지면 중심이 낮은 상태
+### 표준오차(se)
+# 다른 표본을 뽑았을 때에 표본에서 구한 평균과 얼마나 달라지는가를 알려주는 값
+
+# table()과 prop.tabe()을 이용한 교차표 그리기
+# 교차표란?
+# 두개의 질적 자료 간의 현황 또는 관련성을 알아보기 위해 작성하는 표
+# 빈도, 전체 백분율, 행 백분율, 열 백분율의 값을 작성 할 수 있음
+
+##gender와 height에 대한 빈도 구하기
+table(data$height,data$gender)
+##gender와 height에 대한 전체 백분율 구하기
+prop.table(table(data$height,data$gender))*100
+##gender와 height에 대한 행 백분율 구하기
+prop.table(table(data$height,data$gender),margin=1)*100
+##gender와 height에 대한 열 백분율 구하기
+prop.table(table(data$height,data$gender),margin=2)*100
+
+#gender와 weight에 대한 빈도 구하기
+table(data$weight,data$gender)
+##gender와 weight에 대한 전체 백분율 구하기
+prop.table(table(data$weight,data$gender))*100
+##gender와 weight에 대한 행 백분율 구하기
+prop.table(table(data$weight,data$gender),margin=1)*100
+##gender와 weight에 대한 열 백분율 구하기
+prop.table(table(data$weight,data$gender),margin=2)*100
+
+#gender와 age에 대한 빈도 구하기
+table(data$age,data$gender)
+##gender와 age에 대한 전체 백분율 구하기
+prop.table(table(data$age,data$gender))*100
+##gender와 age에 대한 행 백분율 구하기
+prop.table(table(data$age,data$gender),margin=1)*100
+##gender와 age에 대한 열 백분율 구하기
+prop.table(table(data$age,data$gender),margin=2)*100
+
+#gender와 time에 대한 빈도 구하기
+table(data$time,data$gender)
+##gender와 time에 대한 전체 백분율 구하기
+prop.table(table(data$time,data$gender))*100
+##gender와 time에 대한 행 백분율 구하기
+prop.table(table(data$time,data$gender),margin=1)*100
+##gender와 time에 대한 열 백분율 구하기
+prop.table(table(data$time,data$gender),margin=2)*100
+
+#height와 weight에 대한 빈도 구하기
+table(data$weight,data$height)
+##height와 weight에 대한 전체 백분율 구하기
+prop.table(table(data$weight,data$height))*100
+##height와 weight에 대한 행 백분율 구하기
+prop.table(table(data$weight,data$height),margin=1)*100
+##height와 weight에 대한 열 백분율 구하기
+prop.table(table(data$weight,data$height),margin=2)*100
+
+
+#height와 age에 대한 빈도 구하기
+table(data$age,data$height)
+##height와 age에 대한 전체 백분율 구하기
+prop.table(table(data$age,data$height))*100
+##height와 age에대한 행 백분율 구하기
+prop.table(table(data$age,data$height),margin=1)*100
+##height와 age에 대한 열 백분율 구하기
+prop.table(table(data$age,data$height),margin=2)*100
+
+#height와 time에 대한 빈도 구하기
+table(data$time,data$height)
+##height와 time에 대한 전체 백분율 구하기
+prop.table(table(data$time,data$height))*100
+##height와 time에 대한 행 백분율 구하기
+prop.table(table(data$time,data$height),margin=1)*100
+##height와 time에 대한 열 백분율 구하기
+prop.table(table(data$time,data$height),margin=2)*100
+
+
+
+#weight와 age에 대한 빈도 구하기
+table(data$age,data$weight)
+##weight와 age에 대한 전체 백분율 구하기
+prop.table(table(data$age,data$weight))*100
+##weight와 age에 대한 행 백분율 구하기
+prop.table(table(data$age,data$weight),margin=1)*100
+##weight와 age에 대한 열 백분율 구하기
+prop.table(table(data$age,data$weight),margin=2)*100
+
+#weight와 time에 대한 빈도 구하기
+table(data$time,data$weight)
+##weight와 time에 대한 전체 백분율 구하기
+prop.table(table(data$time,data$weight))*100
+##weight와 time에 대한 행 백분율 구하기
+prop.table(table(data$time,data$weight),margin=1)*100
+##weight와 time에 대한 열 백분율 구하기
+prop.table(table(data$time,data$weight),margin=2)*100
+
+#time과 age에 대한 빈도 구하기
+table(data$time,data$age)
+##time과 age에 대한 전체 백분율 구하기
+prop.table(table(data$time,data$age))*100
+##time과 age에 대한 행 백분율 구하기
+prop.table(table(data$time,data$age),margin=1)*100
+##time과 age에 대한 열 백분율 구하기
+prop.table(table(data$time,data$age),margin=2)*100
+
+#gmodels 패키지에 있는 CrossTable() 함수를 이용한 교차표 만들기
+install.packages("gmodels")
+library(gmodels)
+#gender별로 height에 대한 교차표 구하기
+CrossTable(data$height,data$gender,prob.r=TRUE, prob.c=TRUE, prob.t=TRUE, digits=1)
+#prob.r=TRUE : 행 백분율 출력
+#prob.c=TRUE : 열 백분율 출력
+#prob.t=TRUE : 전체 백분율 출력
+#digits=1 : 행 백분율, 열 백분율, 전체 백분율의 소수점을 한 자리까지만 표현되도록 함
+
+#gender별로 weight에 대한 교차표 구하기
+CrossTable(data$weight,data$gender,prob.r=TRUE, prob.c=TRUE, prob.t=TRUE, digits=1)
+#gender별로 age에 대한 교차표 구하기
+CrossTable(data$age,data$gender,prob.r=TRUE, prob.c=TRUE, prob.t=TRUE, digits=1)
+#gender별로 time에 대한 교차표 구하기
+CrossTable(data$time,data$gender,prob.r=TRUE, prob.c=TRUE, prob.t=TRUE, digits=1)
+#height별로 weight에 대한 교차표 구하기
+CrossTable(data$weight,data$height,prob.r=TRUE, prob.c=TRUE, prob.t=TRUE, digits=1)
+#height별로 age에 대한 교차표 구하기
+CrossTable(data$age,data$height,prob.r=TRUE, prob.c=TRUE, prob.t=TRUE, digits=1)
+#height별로 time에 대한 교차표 구하기
+CrossTable(data$time,data$height,prob.r=TRUE, prob.c=TRUE, prob.t=TRUE, digits=1)
+#weight별로 age에 대한 교차표 구하기
+CrossTable(data$age,data$weight,prob.r=TRUE, prob.c=TRUE, prob.t=TRUE, digits=1)
+#weight별로 time에 대한 교차표 구하기
+CrossTable(data$time,data$weight,prob.r=TRUE, prob.c=TRUE, prob.t=TRUE, digits=1)
+#time별로 age에 대한 교차표 구하기
+CrossTable(data$age,data$time,prob.r=TRUE, prob.c=TRUE, prob.t=TRUE, digits=1)
+
+#누적 막대 그래프 구하기
+par(mfrow=c(3,4))
+#gender와 height에 대한 누적막대그래프 구하기
+barplot(table(data$height,data$gender))
+#gender와 weight에 대한 누적막대그래프 구하기
+barplot(table(data$weight,data$gender))
+#gender와 age에 대한 누적막대그래프 구하기
+barplot(table(data$age,data$gender))
+#gender와 time에 대한 누적막대그래프 구하기
+barplot(table(data$time,data$gender))
+#height와 weight에 대한 누적막대그래프 구하기
+barplot(table(data$weight,data$height))
+#height와 age에 대한 누적막대그래프 구하기
+barplot(table(data$age,data$height))
+#height와 time에 대한 누적막대그래프 구하기
+barplot(table(data$time,data$height))
+#weight와 age에 대한 누적막대그래프 구하기
+barplot(table(data$age,data$weight))
+#weight와 time 대한 누적막대그래프 구하기
+barplot(table(data$time,data$weight))
+#time와 age에 대한 누적막대그래프 구하기
+barplot(table(data$age,data$time))
+
+##묶은 세로 막대 그래프 그리기
+par(mfrow=c(3,4))
+barplot(table(data$height,data$gender),beside=TRUE)
+barplot(table(data$weight,data$gender),beside=TRUE)
+barplot(table(data$age,data$gender),beside=TRUE)
+barplot(table(data$time,data$gender),beside=TRUE)
+barplot(table(data$weight,data$height),beside=TRUE)
+barplot(table(data$age,data$height),beside=TRUE)
+barplot(table(data$time,data$height),beside=TRUE)
+barplot(table(data$age,data$weight),beside=TRUE)
+barplot(table(data$time,data$weight),beside=TRUE)
+barplot(table(data$age,data$time),beside=TRUE)
+
+##이 때, 범례를 붙이기 위해서는 legend.text=levels()를 사용하여, 괄호 안에 넣고 싶은 범례를
+##넣어주면 된다.
+##또한, 범례를 위로 올리려면, args.legend=list(x="topright")를 써서 범례의 위치를 설정한다
+##이때, topright는 오른쪽 위로 범례를 지정하라는 의미이다.
+##범례를 따로 넣지 않은 이유는 par(mfrow())함수를 사용하여 한번에 그래프 10개를 보이게
+##만들었기 때문이다.
+
+# 범주형 자료는 시각화의 큰 의미를 가지지 못함.
+#boxplot 과 histogram에서 살펴 볼수 있음.
+par(mfrow=c(2,3))
+boxplot(data$gender)
+boxplot(data$ height)
+boxplot(data$weight)
+boxplot(data$age)
+boxplot(data$time)
+
+# 데이터의 정규성 파악 
+par(mfrow=c(2,3))
+hist(data$gender)
+hist(data$ height)
+hist(data$weight)
+hist(data$age)
+hist(data$time)
+
+# 키와 몸무게 사이의 상관관계 파악
+par(mfrow=c(3,4))
+plot(data$gender, data$height)
+#-> 대체로 성별 2가 성별 1보다 키가 더 크다는 것을 알 수 있음
+plot(data$gender, data$weight)
+#-> 대체로 성별 2가 성별 1보다 몸무게가 더 많이 나간다는 것을 알 수 있음
+plot(data$gender, data$age)
+#-> 성별과 나이는 아무런 관계가 없음
+plot(data$gender, data$time)
+#->  성별과 통학시간은 아무런 관계가 없음
+plot(data$height, data$weight)
+#-> 양의 상관관계가 보임.
+plot(data$height, data$age)
+#-> 키와 나이는 아무런 상관관계가 없음
+plot(data$height, data$time)
+#-> 키와 통학시간은 아무런 상관관계가 없음
+plot(data$weight, data$age)
+#-> 몸무게와 나이는 아무런 상관관계가 없음
+plot(data$weight, data$time)
+#-> 몸무게와 통학시간은 아무런 상관관계가 없음
+plot(data$age, data$time)
+#-> 나이와 통학시간은 아무런 상관관계가 없음
+
+#산점도 행렬 작성하기
+plot(data[,c("gender","height","weight","age","time")])
+pairs(data[,c("gender","height","weight","age","time")])
+#->여러 개의 양적 자료에 대한 산점도를 하나의 그래프로 보여줌
+
+#corrplot패키지로 산점도 행렬 정리
+install.packages("corrplot")
+library(corrplot)
+cor.result=cor(data[,c("gender","height","weight","age","time")])
+corrplot(cor.result,method="circle")
+corrplot(cor.result,method="square")
+corrplot(cor.result,method="ellipse")
+corrplot(cor.result,method="number")
+corrplot(cor.result,method="shade")
+corrplot(cor.result,method="pie")
+corrplot(cor.result,type="full")
+corrplot(cor.result,type="upper")
+corrplot(cor.result,type="lower")
+corrplot.mixed(cor.result)
+corrplot.mixed(cor.result,lower="ellipse",upper="circle")
+
+#3차원 산점도 (scatterplot3d() 함수의 사용)
+install.packages("scatterplot3d")
+library(scatterplot3d)
+scatterplot3d(data$gender, data$ height, data$weight)
+scatterplot3d(data$gender, data$ height, data$age)
+scatterplot3d(data$gender, data$ height, data$time)
+scatterplot3d(data$ height, data$weight, data$age)
+scatterplot3d(data$ height, data$weight, data$time)
+scatterplot3d(data$weight, data$age, data$time)
+scatterplot3d(data$gender, data$weight, data$age)
+scatterplot3d(data$gender, data$weight, data$time)
+scatterplot3d(data$gender, data$age, data$time)
+scatterplot3d(data$height, data$age, data$time)
+
+#3차원 산점도 (scatter3d() 함수의 사용)
+install.packages("Rcmdr")
+library(Rcmdr)
+scatter3d(data$gender, data$ height, data$weight)
+scatter3d(data$gender, data$ height, data$age)
+scatter3d(data$gender, data$ height, data$time)
+scatter3d(data$ height, data$weight, data$age)
+scatter3d(data$ height, data$weight, data$time)
+scatter3d(data$weight, data$age, data$time)
+scatter3d(data$gender, data$weight, data$age)
+scatter3d(data$gender, data$weight, data$time)
+scatter3d(data$gender, data$age, data$time)
+scatter3d(data$height, data$age, data$time)
